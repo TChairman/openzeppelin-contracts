@@ -73,30 +73,4 @@ abstract contract ERC4626Acounting is ERC4626 {
             (supply == 0) ? _initialConvertToAssets(shares, rounding) : shares.mulDiv(totalEquity(), supply, rounding);
     }
 
-    // put in some useful hooks for fees and other things
-    function _beforeWithdraw(address owner, uint256 assets, uint256 shares) internal virtual {}
-
-    function _afterDeposit(address receiver, uint256 assets, uint256 shares) internal virtual {}
-
-    function _withdraw (
-        address caller,
-        address receiver,
-        address owner,
-        uint256 assets,
-        uint256 shares
-    ) internal virtual override {
-        _beforeWithdraw(owner, assets, shares);
-        super._withdraw(caller, receiver, owner, assets, shares);
-    }
-
-    function _deposit (
-        address caller,
-        address receiver,
-        uint256 assets,
-        uint256 shares
-    ) internal virtual override {
-        super._deposit(caller, receiver, assets, shares);
-        _afterDeposit(receiver, assets, shares);
-    }
-
 }
