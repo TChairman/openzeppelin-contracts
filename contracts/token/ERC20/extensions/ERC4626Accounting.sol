@@ -25,7 +25,7 @@ abstract contract ERC4626Acounting is ERC4626 {
     
     /** @dev See {IERC4626-totalAssets}. */
     function totalAssets() public view virtual override returns (uint256) {
-        return _availableAssets() + totalNAV();
+        return IERC20(asset()).balanceOf(address(this)) + totalNAV();
     }
 
      // total asset value of outside investments
@@ -43,11 +43,6 @@ abstract contract ERC4626Acounting is ERC4626 {
         uint256 assets = totalAssets();
         uint256 liabilities = totalLiabilities();
         return (liabilities > assets) ? 0 : assets - liabilities;
-    }
-
-    // available assets should be actual liquid assets that are not reserved for something else, e.g. capital call or planned redemption
-    function _availableAssets() internal virtual view returns (uint256) {
-        return IERC20(asset()).balanceOf(address(this));
     }
     
     /**
